@@ -1,0 +1,5 @@
+{
+    "cpu_threshold": 65,
+    "abuse_ch_api_key": "КЛЮЧ ОТ https://auth.abuse.ch/user/me",
+    "virustotal_api_key": "КЛЮЧ ОТ https://www.virustotal.com/gui/home/upload"
+  }
