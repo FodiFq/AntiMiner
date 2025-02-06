@@ -8,6 +8,7 @@ import json
 import requests
 import datetime
 import hashlib
+import shutil
 
 # Константы для файлов
 l = "Лог.txt"  # Основной лог
@@ -23,6 +24,29 @@ def il():
                 pass
         except:
             pass
+
+def clear_cache():
+    temp_dirs = [
+        os.path.expandvars(r"%TEMP%"),
+        os.path.expandvars(r"C:\\Windows\\Temp"),
+        os.path.expandvars(r"%USERPROFILE%\\AppData\\Local\\Temp"),
+        os.path.expandvars(r"%LOCALAPPDATA%\\Microsoft\\Windows\\Temporary Internet Files"),
+        os.path.expandvars(r"%LOCALAPPDATA%\\Microsoft\\Windows\\INetCache"),
+    ]
+    
+    for temp_dir in temp_dirs:
+        if os.path.exists(temp_dir):
+            try:
+                for filename in os.listdir(temp_dir):
+                    file_path = os.path.join(temp_dir, filename)
+                    if os.path.isfile(file_path) or os.path.islink(file_path):
+                        os.unlink(file_path)
+                    elif os.path.isdir(file_path):
+                        shutil.rmtree(file_path, ignore_errors=True)
+                messagebox.showinfo("Очистка", f"Очищено: {temp_dir}")
+            except Exception as e:
+                messagebox.showerror("Ошибка", f"Ошибка очистки {temp_dir}: {e}")
+
 
 # Функция для загрузки конфигурации из файла
 def lc():
@@ -191,6 +215,7 @@ tk.Button(rt, text="Открыть лог", command=ol).pack(pady=10)
 tk.Button(rt, text="Лог подозрительных процессов", command=osl).pack(pady=10)
 tk.Button(rt, text="Лог вредоносных процессов", command=ov).pack(pady=10)
 tk.Button(rt, text="FAQ", command=fq).pack(pady=10)
+tk.Button(rt, text="Очистить кэш и временные файлы", command=clear_cache).pack(pady=10)
 
 # Текстовое поле для отображения логов
 tx = scrolledtext.ScrolledText(rt, width=50, height=15)
